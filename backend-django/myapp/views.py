@@ -1,11 +1,13 @@
 # analysis/views.py
-import requests # type: ignore
-from django.http import JsonResponse # type: ignore
-from django.views.decorators.csrf import csrf_exempt # type: ignore
-from django.views.decorators.http import require_POST # type: ignore
-from django.utils import timezone # type: ignore
+import requests 
+from django.http import JsonResponse 
+from django.views.decorators.csrf import csrf_exempt 
+from django.views.decorators.http import require_POST 
+from django.contrib.auth.hashers import make_password
 
 from rest_framework.decorators import api_view
+from django.contrib.auth.hashers import check_password
+
 from rest_framework.response import Response
 from myapp.models import UserInfo
 
@@ -62,12 +64,12 @@ def login_view(request):
     try:
         user = UserInfo.objects.get(username=username)
 
-        print(user.username, user.password)  # ✅ 這時候 user 已經存在了
+        print(user)  # ✅ 這時候 user 已經存在了
 
-        if user.password == password:  # ⚠ 若沒加密，可直接比對
-            return Response({'message': '登入成功'})
+        if check_password(password, user.password): 
+            return Response({'LoginStatus' : 'Sucessed', 'message': '登入成功', 'username' : user.username})
         else:
-            return Response({'message': '密碼錯誤'}, status=401)
+            return Response({'LoginStatus' : 'Failed', 'message': '帳號或密碼錯誤'}, status=401)
 
     except UserInfo.DoesNotExist:
-        return Response({'message': '帳號不存在'}, status=404)
+        return Response({'LoginStatus' : 'Failed', 'message': '帳號或密碼錯誤'}, status=404)
