@@ -8,8 +8,11 @@ from django.contrib.auth.hashers import make_password
 from rest_framework.decorators import api_view
 from django.contrib.auth.hashers import check_password
 
+from django.utils import timezone
+from uuid import uuid4
 from rest_framework.response import Response
 from myapp.models import UserInfo
+from django.db import IntegrityError, DatabaseError
 
 
 @csrf_exempt
@@ -59,17 +62,87 @@ def parse_image(request):
 def login_view(request):
     username = request.data.get('username')
     password = request.data.get('password')
+
     print(username)
     print(password)
-    try:
-        user = UserInfo.objects.get(username=username)
+    if not username or not password:
+            return Response({'LoginStatus': 'Failed','message': '帳號與密碼為必填'}, status=400)
+    try:     
+        user = UserInfo.objects.get(UserName=username)
 
-        print(user)  # ✅ 這時候 user 已經存在了
+        print(user.UserID)  # ✅ 這時候 user 已經存在了
 
-        if check_password(password, user.password): 
-            return Response({'LoginStatus' : 'Sucessed', 'message': '登入成功', 'username' : user.username})
+        if check_password(password, user.Password): 
+            return Response({'LoginStatus' : 'Sucessed', 'message': '登入成功', 'UserID' : user.UserID})
         else:
             return Response({'LoginStatus' : 'Failed', 'message': '帳號或密碼錯誤'}, status=401)
 
     except UserInfo.DoesNotExist:
         return Response({'LoginStatus' : 'Failed', 'message': '帳號或密碼錯誤'}, status=404)
+
+
+@api_view(['POST'])
+def register_view(request):
+    try:
+        userid = request.data.get('userId')
+        username = request.data.get('username')
+        password = request.data.get('password')
+
+        print(username)
+        print(password)
+        # 🧩 驗證輸入
+        print("確認欄位是否有空")
+        if not username or not password or not userid:
+            return Response({
+                'RegisterStatus': 'Failed',
+                'message': '帳號與密碼以及userid為必填'
+            }, status=400)
+
+        print("確認帳號是否重複")
+        # 🧩 檢查帳號是否已存在
+        if UserInfo.objects.filter(UserName=username).exists():
+            return Response({
+                'RegisterStatus': 'Failed',
+                'message': '帳號已存在'
+            }, status=409)
+        print("插入至資料表中")
+        # ✅ 建立新使用者（密碼加密 + 系統欄位填入）
+        new_user = UserInfo(
+            DataID=str(uuid4().hex),
+            UserID=userid,
+            UserName=username,
+            Password=make_password(password),
+            CreateID='system',
+            CreateDate=timezone.now(),
+            UpdateID='system',
+            UpdateDate=timezone.now(),
+            DataFlag=b'\x00'
+        )
+        print("插入至資料表成功")
+        new_user.save()
+
+        return Response({
+            'RegisterStatus': 'Success',
+            'message': '註冊成功！',
+            'username': username
+        }, status=200)
+
+    # 捕捉資料庫錯誤
+    except IntegrityError:
+        return Response({
+            'RegisterStatus': 'Failed',
+            'message': '資料庫錯誤（可能是主鍵或欄位衝突）'
+        }, status=500)
+
+    except DatabaseError as e:
+        return Response({
+            'RegisterStatus': 'Failed',
+            'message': f'資料庫發生錯誤：{str(e)}'
+        }, status=500)
+
+    # 其他例外錯誤
+    except Exception as e:
+        return Response({
+            'RegisterStatus': 'Failed',
+            'message': f'系統錯誤：{str(e)}'
+        }, status=500)

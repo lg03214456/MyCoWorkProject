@@ -18,15 +18,15 @@ class ImageAnalysis(models.Model):
 
 
 class UserInfo(models.Model):
-    dataid = models.CharField(db_column='DataID', max_length=32, primary_key=True)
-    createid = models.CharField(db_column='CreateID', max_length=30)
-    createdate = models.DateTimeField(db_column='CreateDate')
-    updateid = models.CharField(db_column='UpdateID', max_length=30)
-    updatedate = models.DateTimeField(db_column='UpdateDate')
-    dataflag = models.BinaryField(db_column='DataFlag')
-    userid = models.CharField(db_column='UserID', max_length=20)
-    username = models.CharField(db_column='UserName', max_length=100)
-    password = models.TextField(db_column='Password')  # 長文字對應 nvarchar(max)
+    DataID = models.CharField(db_column='DataID', max_length=32, primary_key=True)
+    CreateID = models.CharField(db_column='CreateID', max_length=30)
+    CreateDate = models.DateTimeField(db_column='CreateDate')
+    UpdateID = models.CharField(db_column='UpdateID', max_length=30)
+    UpdateDate = models.DateTimeField(db_column='UpdateDate')
+    DataFlag = models.BinaryField(db_column='DataFlag')
+    UserID = models.CharField(db_column='UserID', max_length=20)
+    UserName = models.CharField(db_column='UserName', max_length=100)
+    Password = models.TextField(db_column='Password')  # 長文字對應 nvarchar(max)
 
     class Meta:
         db_table = 'my_app_userinfo'   # ✅ 這裡對應你 SQL Server 裡的實際表名

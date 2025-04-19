@@ -6,6 +6,7 @@ import Demo from './pages/Demo_page.jsx'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './pages/Home.jsx'
 import Login from './pages/Login.jsx'
+import Register from './pages/Register.jsx'
 import Layout from './components/Layout';       // 包含 Navbar 的 Layout
 import { AuthProvider } from './context/AuthContext'; // ✅ 根據實際路徑
 
@@ -23,6 +24,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/Demo" element={<Demo />} />
       </Route>
         <Route path="/Login" element={<Login />} />
+        <Route path="/Register" element={<Register />} />
       </Routes>
     </BrowserRouter>
     </AuthProvider>

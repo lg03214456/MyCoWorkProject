@@ -10,7 +10,44 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+
 from pathlib import Path
+
+
+# # 設定金鑰版本
+# JWT_KEY_VERSION = "20250414"  # 根據實際金鑰版本設定
+
+# # 讀取私鑰
+# with open(Path(__file__).resolve().parent / "jwt_keys" / f"{JWT_KEY_VERSION}-private.pem", "rb") as f:
+#     PRIVATE_KEY = f.read()
+
+# # 讀取公鑰
+# with open(Path(__file__).resolve().parent / "jwt_keys" / f"{JWT_KEY_VERSION}-public.pem", "rb") as f:
+#     PUBLIC_KEY = f.read()
+
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': (
+#         'rest_framework_simplejwt.authentication.JWTAuthentication',
+#     ),
+# }
+
+
+
+# from datetime import timedelta
+# SIMPLE_JWT = {
+#     'ALGORITHM': 'RS256',
+#     'SIGNING_KEY': PRIVATE_KEY,
+#     'VERIFYING_KEY': PUBLIC_KEY,
+#     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
+#     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+#     'AUTH_HEADER_TYPES': ('Bearer',),
+#     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+#     'USER_ID_FIELD': 'id',
+#     'USER_ID_CLAIM': 'user_id',
+#     'JTI_CLAIM': 'jti',
+#     'TOKEN_OBTAIN_SERIALIZER': 'myapp.serializers.MyTokenObtainPairSerializer',
+# }
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -42,6 +79,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'myapp',
+    'authenticator',
     'corsheaders',
     'rest_framework',
 ]
@@ -119,6 +157,14 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
+]
+
+# ✅ 使用 Argon2 作為密碼雜湊演算法（建議放在 settings.py 裡）
+PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.Argon2PasswordHasher',           # ✅ 第一順位：最安全
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',           # 備援用
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
 ]
 
 
