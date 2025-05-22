@@ -2,6 +2,14 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from routes.ocr import ocr_api  # 匯入 Blueprint
 
+# import os
+# from dotenv import load_dotenv
+
+# load_dotenv()  # 從 .env 載入環境變數
+
+# # 測試讀取成功與否
+# print("金鑰位置：", os.getenv("GOOGLE_APPLICATION_CREDENTIALS"))
+
 
 app = Flask(__name__)
 app.register_blueprint(ocr_api)  # 註冊 OCR API

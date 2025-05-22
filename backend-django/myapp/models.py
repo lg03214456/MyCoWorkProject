@@ -1,6 +1,7 @@
-from django.db import models
-
+from django.db import models  # ✅ 正確引用
 # Create your models here.
+from django.utils import timezone
+
 
 class ImageAnalysis(models.Model):
     file_name = models.CharField(max_length=255)
@@ -20,14 +21,14 @@ class ImageAnalysis(models.Model):
 class UserInfo(models.Model):
     DataID = models.CharField(db_column='DataID', max_length=32, primary_key=True)
     CreateID = models.CharField(db_column='CreateID', max_length=30)
-    CreateDate = models.DateTimeField(db_column='CreateDate')
+    CreateDate = models.DateTimeField(db_column='CreateDate', default=timezone.now)
     UpdateID = models.CharField(db_column='UpdateID', max_length=30)
-    UpdateDate = models.DateTimeField(db_column='UpdateDate')
+    UpdateDate = models.DateTimeField(db_column='UpdateDate', default=timezone.now)
     DataFlag = models.BinaryField(db_column='DataFlag')
     UserID = models.CharField(db_column='UserID', max_length=20)
-    UserName = models.CharField(db_column='UserName', max_length=100)
+    UserName = models.CharField(db_column='UserName', max_length=100, unique=True)
     Password = models.TextField(db_column='Password')  # 長文字對應 nvarchar(max)
-
+  
     class Meta:
         db_table = 'my_app_userinfo'   # ✅ 這裡對應你 SQL Server 裡的實際表名
         managed = False                # ✅ 不讓 Django 對這張表做 migrate（因為已存在）

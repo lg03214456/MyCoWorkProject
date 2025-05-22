@@ -12,17 +12,23 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 
 from pathlib import Path
+from datetime import timedelta
 
 
-# # 設定金鑰版本
-# JWT_KEY_VERSION = "20250414"  # 根據實際金鑰版本設定
+# # # # 設定金鑰版本
+# JWT_KEY_VERSION = "20250421"  # 根據實際金鑰版本設定
+
+# BASE_DIR = Path(__file__).resolve().parent.parent  # backend-django/
+# JWT_KEY_DIR = BASE_DIR / "authenticator" /  "jwt_keys"      # backend-django/authenticator
+
+# print("🔐 正在使用的金鑰路徑：", JWT_KEY_DIR)
 
 # # 讀取私鑰
-# with open(Path(__file__).resolve().parent / "jwt_keys" / f"{JWT_KEY_VERSION}-private.pem", "rb") as f:
+# with open(JWT_KEY_DIR / f"key-{JWT_KEY_VERSION}-private.pem", "rb") as f:
 #     PRIVATE_KEY = f.read()
 
 # # 讀取公鑰
-# with open(Path(__file__).resolve().parent / "jwt_keys" / f"{JWT_KEY_VERSION}-public.pem", "rb") as f:
+# with open(JWT_KEY_DIR / f"key-{JWT_KEY_VERSION}-public.pem", "rb") as f:
 #     PUBLIC_KEY = f.read()
 
 # REST_FRAMEWORK = {
@@ -32,18 +38,16 @@ from pathlib import Path
 # }
 
 
-
-# from datetime import timedelta
 # SIMPLE_JWT = {
 #     'ALGORITHM': 'RS256',
 #     'SIGNING_KEY': PRIVATE_KEY,
 #     'VERIFYING_KEY': PUBLIC_KEY,
 #     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
 #     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+#     'ROTATE_REFRESH_TOKENS': True,
+#     'BLACKLIST_AFTER_ROTATION': True,
 #     'AUTH_HEADER_TYPES': ('Bearer',),
 #     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
-#     'USER_ID_FIELD': 'id',
-#     'USER_ID_CLAIM': 'user_id',
 #     'JTI_CLAIM': 'jti',
 #     'TOKEN_OBTAIN_SERIALIZER': 'myapp.serializers.MyTokenObtainPairSerializer',
 # }
@@ -68,9 +72,12 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # 你 React 的開發網址
-    "http://127.0.0.1:5173",
+    "http://127.0.0.1:5173",   
 ]
 
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^http://26\.\d{1,3}\.\d{1,3}\.\d{1,3}:5173$",
+]
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',

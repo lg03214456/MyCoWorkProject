@@ -4,6 +4,10 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 
+from authenticator.views import TokenObtainPairView
+from .serializers import MyTokenObtainPairSerializer
+
+
 class MyProtectedView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -15,3 +19,6 @@ class MyProtectedView(APIView):
         return Response({ "msg": "Hello, secure world!" })
     
 
+
+class MyTokenObtainView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer

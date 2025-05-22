@@ -43,7 +43,7 @@ export default function Demo() {
     // TODO: 這裡可以改為真正呼叫後端的 OCR API
     //setResultText('模擬結果：這是解析後的文字...');
     try {
-      const res = await axios.post('http://localhost:8000/api/parse_image/', formData, {
+      const res = await axios.post('http://26.165.84.169:8000/api/parse_image/', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         },

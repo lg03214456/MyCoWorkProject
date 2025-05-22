@@ -1,10 +1,11 @@
 # 3️⃣ Utility function: validate token by jti & ip
 from rest_framework.exceptions import AuthenticationFailed
-from .models import JWTBlacklist
 
 def validate_token_payload(payload, request):
-    # 1. Check token expiration (optional, already done by lib)
+    from .models import JWTBlacklist  # 延遲匯入
 
+    # 1. Check token expiration (optional, already done by lib)
+    
     # 2. Check jti in blacklist
     if JWTBlacklist.objects.filter(jti=payload['jti']).exists():
         raise AuthenticationFailed("This token has been revoked.")
