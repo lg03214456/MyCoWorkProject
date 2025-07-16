@@ -1,0 +1,25 @@
+# 所有虛擬環境
+venv/
+**/venv/
+
+# Python 檔案暫存
+__pycache__/
+*.pyc
+*.pyo
+*.log
+
+# Flask / Django
+*.sqlite3
+instance/
+.env
+*.json
+
+# Node 前端
+node_modules/
+build/
+dist/
+
+# 系統/編輯器
+.DS_Store
+.vscode/
+Thumbs.db
