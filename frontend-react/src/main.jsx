@@ -12,7 +12,7 @@ import FileList from './pages/Upload/FileList.jsx'
 import Layout from './components/Layout';       // 包含 Navbar 的 Layout
 import { AuthProvider } from './context/AuthContext'; // ✅ 根據實際路徑
 import ProtectedRoute from './components/ProtectedRoute';
-
+import ChangePassword from './pages/Login/ChangePassword.jsx'
 
 createRoot(document.getElementById('root')).render(
   
@@ -37,6 +37,8 @@ createRoot(document.getElementById('root')).render(
         <Route path="/FileList" element={<FileList />} />
         <Route path="/App" element={<App />} />
         <Route path="/Demo" element={<Demo />} />
+        <Route path="/ChangePassword" element={<ChangePassword />} />
+      
       </Route>
 
       </Routes>

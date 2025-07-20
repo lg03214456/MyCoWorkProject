@@ -1,0 +1,44 @@
+/* src/components/Windows8Loader/Windows8Loader.css */
+
+.windows8 {
+  position: relative;
+  width: 58px;
+  height: 58px;
+  margin: auto;
+}
+
+.windows8 .wBall {
+  position: absolute;
+  width: 55px;
+  height: 55px;
+  opacity: 0;
+  transform: rotate(225deg);
+  animation: orbit 7.87s infinite;
+}
+
+.windows8 .wBall .wInnerBall {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  background: #1e90ff; /* 橘色／可換你想要的色碼 */
+  left: 0px;
+  top: 0px;
+  border-radius: 7px;
+}
+
+.windows8 #wBall_1 { animation-delay: 1.72s; }
+.windows8 #wBall_2 { animation-delay: 0.34s; }
+.windows8 #wBall_3 { animation-delay: 0.69s; }
+.windows8 #wBall_4 { animation-delay: 1.03s; }
+.windows8 #wBall_5 { animation-delay: 1.38s; }
+
+@keyframes orbit {
+  0% { opacity: 1; transform: rotate(180deg); }
+  7% { opacity: 1; transform: rotate(300deg); }
+  30% { opacity: 1; transform: rotate(410deg); }
+  39% { opacity: 1; transform: rotate(645deg); }
+  70% { opacity: 1; transform: rotate(770deg); }
+  75% { opacity: 1; transform: rotate(900deg); }
+  76% { opacity: 0; transform: rotate(900deg); }
+  100% { opacity: 0; transform: rotate(900deg); }
+}

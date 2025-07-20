@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Typography,
@@ -16,10 +17,43 @@ const FileUpload = () => {
   const fileInputRef = useRef(null);
   const [uploads, setUploads] = useState([]);
 
+
+  const navigate = useNavigate();
+  const handleListClick = () => {
+      navigate('/FileList'); // 🔁 導向 /filelist 路由
+    };
+
   // snackbar 狀態
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState('info'); // 'success' | 'error' | 'warning' | 'info'
+  //drag
+  const [dragging, setDragging] = useState(false);
+  const handleDragOver = (e) => {
+  e.preventDefault(); // 必須阻止預設行為才能 drop
+};
+
+const handleDragEnter = (e) => {
+  e.preventDefault();
+  setDragging(true);
+};
+
+const handleDragLeave = (e) => {
+  e.preventDefault();
+  setDragging(false);
+};
+
+const handleDrop = (e) => {
+  e.preventDefault();
+  setDragging(false);
+
+  const files = Array.from(e.dataTransfer.files);
+  if (files.length > 0) {
+    // 模擬 input 的選檔行為
+    handleFileSelect({ target: { files } });
+  }
+}
+
 
   const showSnackbar = (message, severity = 'info') => {
     setSnackbarMessage(message);
@@ -133,12 +167,18 @@ const FileUpload = () => {
       <Paper
         elevation={3}
         onClick={() => fileInputRef.current.click()}
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
+        onDragEnter={handleDragEnter}
+        onDragLeave={handleDragLeave}
+
         sx={{
           width: 300,
           height: 200,
           mx: 'auto',
           mb: 4,
-          bgcolor: '#eee',
+          bgcolor: dragging ? '#ddd' : '#eee',
+          border: dragging ? '2px dashed #666' : 'none',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
@@ -180,8 +220,16 @@ const FileUpload = () => {
       {/* 上傳按鈕 */}
       
         <Box sx={{ mt: 4, textAlign: 'center' }}>
-          <Button variant="contained" onClick={handleUploadClick}>
+          <Button variant="contained" onClick={handleUploadClick}
+                  sx={{ mx: 2, backgroundColor: '#1976d2', color: '#fff' }} // 藍底白字
+          >
             上傳
+          </Button>
+          <Button variant="contained" onClick={handleListClick}
+            sx={{ mx: 2, backgroundColor: '#1976d2', color: '#fff' }} // 藍底白字
+          >
+            
+            檔案清單
           </Button>
         </Box>
       

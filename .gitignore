@@ -12,7 +12,7 @@ __pycache__/
 *.sqlite3
 instance/
 .env
-*.json
+api-flask/vision-ai-test-458916-49a35b9361d5.json
 
 # Node 前端
 node_modules/

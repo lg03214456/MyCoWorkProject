@@ -63,6 +63,38 @@ def parse_image(request):
 
 
 @api_view(['POST'])
+def changepassword(request):
+    # print(request.data)
+    oldpassword = request.data.get('oldPassword')
+    newpassword = request.data.get('newPassword')
+    user_obj = request.data.get('user',{})
+    username = user_obj.get("username")
+
+    print(username)
+    print(oldpassword)
+    print(newpassword)
+    
+    try:     
+        # 查詢使用者
+        user = UserInfo.objects.get(UserName=username)
+        print("查到使用者：", user.UserID)
+        print()  # ✅ 這時候 user 已經存在了
+
+        if check_password(oldpassword, user.Password):
+            if(oldpassword == newpassword):
+                return Response({'LoginStatus': 'error', 'message': '請勿輸入修改為相同密碼'}, status=404)
+            else:
+                user.Password = make_password(newpassword)       
+                return Response({'LoginStatus': 'Success', 'message': '密碼變更成功'}, status=200)
+        
+    except UserInfo.DoesNotExist:
+        return Response({'LoginStatus': 'Failed', 'message': '使用者不存在'}, status=404)
+
+    except Exception as e:
+        print("例外錯誤：", str(e))
+        return Response({'LoginStatus' : 'Failed', 'message': '修改失敗'}, status=404)
+
+@api_view(['POST'])
 def login_view(request):
     username = request.data.get('username')
     password = request.data.get('password')

@@ -1,5 +1,5 @@
 // SnackbarComponent.jsx
-import React from 'react';
+
 import { Snackbar, Alert } from '@mui/material';
 
 const SnackbarComponent = ({ open, message, severity = 'info', onClose }) => {

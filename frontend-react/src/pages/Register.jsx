@@ -64,10 +64,10 @@ const Register = () => {
     alertMsg={alertMsg}
     alertType={alertType}
     buttonText="註冊"
+    showHint ={false}
+    handledirectLogin ={handledirectLogin}
 />
- <Button variant="contained" onClick={handledirectLogin}>
-        回登入
-      </Button>
+
   </>
   );
 };
