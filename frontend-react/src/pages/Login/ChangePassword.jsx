@@ -91,13 +91,17 @@ const ChangePassword = () => {
       );
 
       if (res.status === 200) {
-        setStatusDialog({
-          open: true,
-          status: "success",
-          title: "修改密碼成功",
-          message: "修改密碼成功，請重新登入",
-        });
-        logout();
+        setTimeout(
+          () =>
+            setStatusDialog({
+              open: true,
+              status: "success",
+              title: "修改密碼成功",
+              message: "修改密碼成功，請重新登入",
+              action: "logoutAfterChange",
+            }),
+          1000
+        );
       }
 
       if (res.status === 404) {
@@ -257,7 +261,13 @@ const ChangePassword = () => {
 
         <StatusDialog
           open={statusDialog.open}
-          onClose={() => setStatusDialog({ ...statusDialog, open: false })}
+          onClose={() => {
+            setStatusDialog({ ...statusDialog, open: false });
+
+            if (statusDialog.action === "logoutAfterChange") {
+              logout();             
+            }
+          }}
           status={statusDialog.status}
           title={statusDialog.title}
           message={statusDialog.message}

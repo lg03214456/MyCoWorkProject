@@ -84,7 +84,8 @@ def changepassword(request):
             if(oldpassword == newpassword):
                 return Response({'LoginStatus': 'error', 'message': '請勿輸入修改為相同密碼'}, status=404)
             else:
-                user.Password = make_password(newpassword)       
+                user.Password = make_password(newpassword)
+                user.save()  # ✅ 儲存修改       
                 return Response({'LoginStatus': 'Success', 'message': '密碼變更成功'}, status=200)
         
     except UserInfo.DoesNotExist:
