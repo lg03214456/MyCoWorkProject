@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import AuthForm from '../components/AuthForm';
 import { Button } from '@mui/material'; // ✅ 對的
-
+import { useConfig  } from "../context/useConfig"; // 或實際相對路徑
 
 const Register = () => {
   const { login } = useAuth();
@@ -15,10 +15,11 @@ const Register = () => {
   const [alertType, setAlertType] = useState('success'); // ✅ 'success' or 'error'
   const navigate = useNavigate();
 
+  const { baseUrl } = useConfig(); // ✅ 加上這行來取得 API base URL
   const handleRegister = async () => {
     try {
       setAlertMsg('');
-      const res = await axios.post('http://localhost:8000/api/register/', {
+      const res = await axios.post(`${baseUrl}api/register/`, {
         userId,
         username,
         password

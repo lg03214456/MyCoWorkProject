@@ -1,14 +1,28 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-
+import { useEffect, useState } from "react";
+import reactLogo from "./assets/react.svg";
+import viteLogo from "/vite.svg";
+import "./App.css";
+//測試讀取config
+import { loadConfig } from "./utils/config";
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
+
+  const [apiUrl, setApiUrl] = useState("");
+
+  useEffect(() => {
+    loadConfig().then((cfg) => {
+      console.log("目前環境：", cfg.ENV);
+      console.log("API Base URL：", cfg.BASE_URL);
+      setApiUrl(cfg.BASE_URL);
+    });
+  }, []);
 
   return (
     <>
-    
+      <div>
+        <h2>目前 API URL：</h2>
+        <p>{apiUrl || "載入中..."}</p>
+      </div>
       <div>
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
@@ -30,7 +44,7 @@ function App() {
         Click on the Vite and React logos to learn more
       </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

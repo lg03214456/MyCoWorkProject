@@ -5,7 +5,8 @@ import axios from "axios";
 import AuthForm from "../components/AuthForm";
 import { Button, Box } from "@mui/material"; // ✅ 對的
 import Windows8Loader from "../components/Windows8Loader/Windows8Loader";
-
+//API config Switch
+import { useConfig  } from "../context/useConfig"; // 或實際相對路徑
 const Login = () => {
   const { login } = useAuth();
   const [username, setUsername] = useState("");
@@ -15,12 +16,17 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false); //Loading Status
   const navigate = useNavigate();
 
+  const { baseUrl } = useConfig(); // ✅ 加上這行來取得 API base URL
   const handleLogin = async () => {
-    try {
+    try {       
       setIsLoading(true);
       setAlertMsg("");
-      console.log("Test");
-      const res = await axios.post("http://localhost:8000/api/login_view/", {
+      // const res = await axios.post("http://localhost:8000/api/login_view/", {
+      //   username,
+      //   password,
+      // });
+      // console.log(baseUrl)
+      const res = await axios.post(`${baseUrl}api/login_view/`, {
         username,
         password,
       });
@@ -31,11 +37,11 @@ const Login = () => {
         // 登入成功，先記住使用者
         login(res.data.UserID, res.data.access, res.data.Identified); // 將 username 存入 context
         // ✅ 延遲導頁，動畫結束再轉頁
-        
+
         setTimeout(() => {
           navigate("/");
           setIsLoading(false);
-        }, 1000);// 可調整動畫顯示時間（ms）
+        }, 1000); // 可調整動畫顯示時間（ms）
       }
     } catch (err) {
       console.log("errTest");
@@ -46,9 +52,11 @@ const Login = () => {
         err.response?.status === 400
       ) {
         setAlertMsg(err.response.data.message);
+        setIsLoading(false);
       } else {
         //setAlertMsg(err.response);
         setAlertMsg("登入失敗，請稍後再試");
+        setIsLoading(false);
       }
       //alert(err);
     }
@@ -87,7 +95,6 @@ const Login = () => {
         </Box>
       )}
     </>
-    
   );
 };
 

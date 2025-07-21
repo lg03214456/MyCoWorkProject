@@ -20,6 +20,8 @@ import {
 import { Visibility, Delete, Download, Share   } from "@mui/icons-material";
 import axios from "axios";
 import SnackbarComponent from '../../components/Snackbar.jsx';
+import { useConfig  } from "../../context/useConfig"; // 或實際相對路徑
+
 
 const FileList = () => {
   const [fileList, setFileList] = useState([]);
@@ -65,13 +67,15 @@ const FileList = () => {
 
   const user = JSON.parse(localStorage.getItem("user"));
 
+  const { baseUrl } = useConfig(); // ✅ 加上這行來取得 API base URL
+
   useEffect(() => {
     const formData = new FormData();
-    formData.append("user_id", user.Identified);
+    formData.append("user_id", user.Identified);   
     const urls = [
-    "http://localhost:8000/file/searchlist/",    // 上傳清單
-    "http://localhost:8000/file/sharedlist/",    // 分享清單
-    "http://localhost:8000/file/publiclist/",    // 公用清單
+    `${baseUrl}file/searchlist/`,    // 上傳清單
+    `${baseUrl}/file/sharedlist/`,    // 分享清單
+    `${baseUrl}file/publiclist/`,    // 公用清單
   ];
   console.log(tabIndex);
     axios

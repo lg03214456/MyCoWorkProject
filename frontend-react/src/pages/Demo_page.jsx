@@ -8,6 +8,8 @@ import {
   Paper,
 } from '@mui/material';
 import axios from 'axios';
+import { useConfig  } from "../context/useConfig"; // 或實際相對路徑
+
 
 export default function Demo() {
 
@@ -15,6 +17,7 @@ export default function Demo() {
   const [previewUrl, setPreviewUrl] = useState(null);
   const [resultText, setResultText] = useState('尚未解析');
   const [loading, setLoading] = useState(false);
+  const { baseUrl } = useConfig(); // ✅ 加上這行來取得 API base URL
 
   // 上傳圖片時的處理
   const handleFileChange = (event) => {
@@ -42,7 +45,7 @@ export default function Demo() {
     // TODO: 這裡可以改為真正呼叫後端的 OCR API
     //setResultText('模擬結果：這是解析後的文字...');
     try {
-      const res = await axios.post('http://26.165.84.169:8000/api/parse_image/', formData, {
+      const res = await axios.post(`${baseUrl}api/parse_image/`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         },

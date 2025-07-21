@@ -13,10 +13,12 @@ import Layout from './components/Layout';       // 包含 Navbar 的 Layout
 import { AuthProvider } from './context/AuthContext'; // ✅ 根據實際路徑
 import ProtectedRoute from './components/ProtectedRoute';
 import ChangePassword from './pages/Login/ChangePassword.jsx'
+import { ConfigProvider } from './context/ConfigContext';
 
 createRoot(document.getElementById('root')).render(
   
   <StrictMode>
+    <ConfigProvider>
     <AuthProvider> {/* ✅ 提供全域登入狀態 */}
     <BrowserRouter>
       <Routes>
@@ -44,6 +46,7 @@ createRoot(document.getElementById('root')).render(
       </Routes>
     </BrowserRouter>
     </AuthProvider>
+    </ConfigProvider>
   </StrictMode>
 
 )

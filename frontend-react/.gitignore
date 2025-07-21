@@ -1,3 +1,6 @@
+# 安全建議
+.env
+
 # Logs
 logs
 *.log

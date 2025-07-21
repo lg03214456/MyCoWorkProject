@@ -12,8 +12,10 @@ import {
 } from '@mui/material';
 import { CloudUpload, Close } from '@mui/icons-material';
 import axios from 'axios';
+import { useConfig  } from "../../context/useConfig"; // 或實際相對路徑
 
 const FileUpload = () => {
+  const { baseUrl } = useConfig(); // ✅ 加上這行來取得 API base URL
   const fileInputRef = useRef(null);
   const [uploads, setUploads] = useState([]);
 
@@ -147,7 +149,7 @@ const handleDrop = (e) => {
         const formData = new FormData();
         formData.append('file', fileItem.file); //檔案欄位 formData.append('file', file) 
         formData.append('user_id', user.Identified); // ✅ 傳遞使用者 ID(Identified) 普通欄位formData.append('key', val)
-        const res = await axios.post('http://localhost:8000/file/upload/', formData);
+        const res = await axios.post(`${baseUrl}file/upload/`, formData);
         console.log(`檔案 ${fileItem.name} 回應：`, res.data);
       }
       showSnackbar('✅ 所有檔案已成功上傳！', 'success');

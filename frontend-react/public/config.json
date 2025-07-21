@@ -1,0 +1,9 @@
+{
+  "ENV": "production",
+  "development": {
+    "BASE_URL": "http://localhost:8000/"
+  },
+  "production": {
+    "BASE_URL": "http://26.165.84.169:8000/"
+  }
+}

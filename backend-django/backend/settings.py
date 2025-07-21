@@ -14,6 +14,19 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 from datetime import timedelta
 import os
+from dotenv import load_dotenv
+
+load_dotenv()  # 載入 .env 檔
+
+# 環境標記：development / production
+ENV = os.getenv('ENV', 'development').lower()
+
+# 根據 ENV 決定使用哪個 API URL
+if ENV == 'production':
+    FLASK_API_URL = os.getenv('FLASK_API_URL_PRODUCTION')
+else:
+    FLASK_API_URL = os.getenv('FLASK_API_URL_DEVELOPMENT')
+    
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_URL = '/media/'
@@ -76,12 +89,12 @@ ALLOWED_HOSTS = ['*']
 
 # Application definition
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",  # 你 React 的開發網址
-    "http://127.0.0.1:5173",   
+    "http://localhost:5173",   # ✅ 允許本機開發（localhost）訪問 Django API
+    "http://127.0.0.1:5173",   # ✅ 允許使用 127.0.0.1 作為前端來源（等於 localhost）
 ]
 
 CORS_ALLOWED_ORIGIN_REGEXES = [
-    r"^http://26\.\d{1,3}\.\d{1,3}\.\d{1,3}:5173$",
+    r"^http://26\.\d{1,3}\.\d{1,3}\.\d{1,3}:5173$", # ✅ 允許任何 26.X.X.X:5173 來源的前端（例如 VPN IP）
 ]
 INSTALLED_APPS = [
     'django.contrib.admin',

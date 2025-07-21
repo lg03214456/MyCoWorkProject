@@ -16,6 +16,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import useAuth from "../../context/useAuth.jsx";
+import { useConfig  } from "../../context/useConfig"; // 或實際相對路徑
 
 const ChangePassword = () => {
   //全域登入
@@ -34,6 +35,8 @@ const ChangePassword = () => {
 
   //dialog 畫面開啟
   const [dialogOpen, setDialogOpen] = useState(false);
+  
+  const { baseUrl } = useConfig(); // ✅ 加上這行來取得 API base URL
 
   //dialog msg
   const [statusDialog, setStatusDialog] = useState({
@@ -82,7 +85,7 @@ const ChangePassword = () => {
     setDialogOpen(false);
     try {
       const res = await axios.post(
-        "http://localhost:8000/api/changepassword/",
+        `${baseUrl}api/changepassword/`,
         {
           user,
           oldPassword,

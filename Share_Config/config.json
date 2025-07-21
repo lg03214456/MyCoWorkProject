@@ -1,0 +1,9 @@
+{
+  "ENV": "development", 
+  "development": {
+    "BASE_URL": "http://localhost:8000/"
+  },
+  "production": {
+    "BASE_URL": "https://api.yourdomain.com/"
+  }
+}

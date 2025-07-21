@@ -15,6 +15,7 @@ from authenticator.models import LoginSession  # ✅ 你的 LoginSession 表
 from myapp.utils import get_client_ip
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from django.conf import settings
 
 
 
@@ -30,7 +31,8 @@ def parse_image(request):
 
     # 呼叫 Flask OCR API
     try:
-        flask_url = 'http://127.0.0.1:5000/ocr'
+        # flask_url = 'http://127.0.0.1:5000/ocr'
+        flask_url = f"{settings.FLASK_API_URL}ocr"
         files = {'image': image.file}
         flask_res = requests.post(flask_url, files=files, timeout=10)
         flask_res.raise_for_status()
